@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio — Muhammad Daffa Al-Fikri</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:    #0a0f1e;
+      --navy2:   #0d1526;
+      --navy3:   #111d35;
+      --card:    #131e33;
+      --border:  rgba(99,179,255,.12);
+      --blue:    #3b82f6;
+      --blue2:   #60a5fa;
+      --cyan:    #22d3ee;
+      --text:    #e2e8f0;
+      --muted:   #64748b;
+      --white:   #fff;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ── GLOW BLOBS ── */
+    .blob {
+      position: fixed; border-radius: 50%;
+      filter: blur(100px); pointer-events: none; z-index: 0;
+    }
+    .blob-1 { width: 500px; height: 500px; background: rgba(59,130,246,.07); top: -100px; left: -100px; }
+    .blob-2 { width: 400px; height: 400px; background: rgba(34,211,238,.05); bottom: 10%; right: -80px; }
+    .blob-3 { width: 300px; height: 300px; background: rgba(59,130,246,.06); top: 50%; left: 40%; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6%;
+      height: 64px;
+      background: rgba(10,15,30,.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem; color: var(--white);
+      letter-spacing: .5px;
+    }
+    .nav-logo span { color: var(--cyan); }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .85rem; font-weight: 500;
+      letter-spacing: .5px; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--blue2); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 6% 80px;
+      position: relative; z-index: 1;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 60px; align-items: center;
+      max-width: 1100px; margin: 0 auto; width: 100%;
+    }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      background: rgba(59,130,246,.1);
+      border: 1px solid rgba(59,130,246,.25);
+      border-radius: 20px;
+      color: var(--blue2); font-size: .8rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--cyan); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(1.5); }
+    }
+
+    .hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      color: var(--white); line-height: 1.1;
+      margin-bottom: 8px;
+      animation: fadeUp .6s .1s ease both;
+    }
+    .hero-name span { color: var(--cyan); }
+
+    .hero-role {
+      font-size: 1.15rem; color: var(--blue2);
+      font-weight: 500; margin-bottom: 20px;
+      animation: fadeUp .6s .2s ease both;
+    }
+
+    .hero-desc {
+      font-size: .95rem; color: #94a3b8;
+      line-height: 1.8; max-width: 500px;
+      margin-bottom: 32px;
+      animation: fadeUp .6s .3s ease both;
+    }
+
+    .hero-buttons {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      animation: fadeUp .6s .4s ease both;
+    }
+
+    .btn-primary {
+      padding: 12px 28px;
+      background: var(--blue);
+      color: #fff; border: none; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(59,130,246,.35);
+    }
+    .btn-primary:hover {
+      background: var(--blue2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(59,130,246,.45);
+    }
+
+    .btn-outline {
+      padding: 12px 28px;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: border-color .2s, color .2s, transform .15s;
+    }
+    .btn-outline:hover {
+      border-color: var(--blue2); color: var(--blue2);
+      transform: translateY(-2px);
+    }
+
+    /* FOTO PROFIL */
+    .hero-photo-wrap {
+      display: flex; justify-content: center;
+      animation: fadeUp .6s .2s ease both;
+    }
+
+    .hero-photo {
+      width: 280px; height: 280px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      overflow: hidden; position: relative;
+      box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 8px rgba(59,130,246,.06);
+    }
+
+    .hero-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px; color: var(--muted);
+      font-size: .85rem; text-align: center; padding: 20px;
+    }
+    .photo-placeholder svg { opacity: .3; }
+
+    .hero-photo-badge {
+      position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+      background: var(--blue);
+      color: #fff; font-size: .75rem; font-weight: 700;
+      padding: 6px 16px; border-radius: 20px 20px 0 0;
+      letter-spacing: .5px; white-space: nowrap;
+    }
+
+    /* STATS */
+    .hero-stats {
+      display: flex; gap: 28px; margin-top: 36px;
+      animation: fadeUp .6s .5s ease both;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem; color: var(--white);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--cyan); }
+    .stat-label { font-size: .75rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; padding: 80px 6%; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--blue2); font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+    .section-label::before {
+      content: ''; display: block;
+      width: 20px; height: 2px; background: var(--blue2);
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--white); margin-bottom: 48px;
+    }
+
+    .divider {
+      border: none; border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+
+    .about-text p {
+      color: #94a3b8; line-height: 1.9; font-size: .95rem;
+      margin-bottom: 16px;
+    }
+
+    .about-info { display: flex; flex-direction: column; gap: 14px; }
+
+    .info-row {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 14px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color .2s;
+    }
+    .info-row:hover { border-color: rgba(59,130,246,.3); }
+
+    .info-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(59,130,246,.12);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 1rem;
+    }
+
+    .info-label { font-size: .75rem; color: var(--muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: .5px; }
+    .info-value { font-size: .9rem; color: var(--text); font-weight: 500; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--navy2); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px;
+      transition: border-color .2s, transform .2s;
+    }
+    .skill-card:hover { border-color: rgba(59,130,246,.3); transform: translateY(-3px); }
+
+    .skill-card-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 18px;
+    }
+    .skill-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(59,130,246,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .skill-card-title { font-weight: 600; color: var(--white); font-size: .95rem; }
+    .skill-card-sub   { font-size: .8rem; color: var(--muted); }
+
+    .skill-item { margin-bottom: 12px; }
+    .skill-item:last-child { margin-bottom: 0; }
+    .skill-top {
+      display: flex; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .skill-name  { font-size: .85rem; color: var(--text); }
+    .skill-pct   { font-size: .8rem; color: var(--blue2); font-weight: 600; }
+
+    .skill-bar {
+      height: 4px; background: rgba(255,255,255,.07);
+      border-radius: 2px; overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transition: width 1.2s cubic-bezier(.25,.8,.25,1);
+      width: 0;
+    }
+    .skill-fill.animated { width: var(--w); }
+
+    /* ── EXPERIENCE / EDUCATION ── */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 0; top: 8px; bottom: 8px;
+      width: 2px; background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative; margin-bottom: 36px;
+    }
+    .timeline-item::before {
+      content: ''; position: absolute;
+      left: -34px; top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 2px solid var(--navy);
+      box-shadow: 0 0 0 4px rgba(59,130,246,.2);
+    }
+
+    .tl-date {
+      font-size: .75rem; color: var(--blue2); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .tl-title {
+      font-size: 1rem; font-weight: 700; color: var(--white);
+      margin-bottom: 2px;
+    }
+    .tl-place { font-size: .85rem; color: var(--muted); margin-bottom: 8px; }
+    .tl-desc  { font-size: .88rem; color: #94a3b8; line-height: 1.7; }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative; overflow: hidden;
+    }
+    .project-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s;
+    }
+    .project-card:hover {
+      border-color: rgba(59,130,246,.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(59,130,246,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 14px;
+    }
+    .project-title { font-weight: 700; color: var(--white); margin-bottom: 8px; font-size: .95rem; }
+    .project-desc  { font-size: .85rem; color: #94a3b8; line-height: 1.7; margin-bottom: 16px; }
+
+    .project-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tag {
+      padding: 3px 10px; border-radius: 4px;
+      background: rgba(59,130,246,.1);
+      border: 1px solid rgba(59,130,246,.2);
+      color: var(--blue2); font-size: .72rem; font-weight: 600;
+    }
+
+    .project-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--blue2); text-decoration: none;
+      font-size: .82rem; font-weight: 600;
+      transition: color .2s;
+    }
+    .project-link:hover { color: var(--cyan); }
+
+    /* ── CERTIFICATES ── */
+    #certificates { background: var(--navy2); }
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px;
+      display: flex; gap: 14px; align-items: flex-start;
+      transition: border-color .2s, transform .2s;
+    }
+    .cert-card:hover { border-color: rgba(59,130,246,.3); transform: translateY(-2px); }
+
+    .cert-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(34,211,238,.1);
+      border: 1px solid rgba(34,211,238,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+
+    .cert-name   { font-size: .88rem; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+    .cert-issuer { font-size: .78rem; color: var(--muted); margin-bottom: 4px; }
+    .cert-year   {
+      display: inline-block; font-size: .72rem; font-weight: 600;
+      color: var(--cyan);
+      background: rgba(34,211,238,.08);
+      border: 1px solid rgba(34,211,238,.2);
+      padding: 2px 8px; border-radius: 4px;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: start;
+    }
+
+    .contact-text p { color: #94a3b8; line-height: 1.9; font-size: .95rem; margin-bottom: 28px; }
+
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px; text-decoration: none;
+      transition: border-color .2s, transform .2s;
+    }
+    .contact-link:hover { border-color: rgba(59,130,246,.3); transform: translateX(4px); }
+
+    .contact-link-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(59,130,246,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-link-label { font-size: .75rem; color: var(--muted); }
+    .contact-link-val   { font-size: .88rem; color: var(--text); font-weight: 500; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-field label {
+      display: block; font-size: .75rem; font-weight: 600;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .form-field input,
+    .form-field textarea {
+      width: 100%; padding: 11px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: .9rem;
+      outline: none; transition: border-color .2s;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--blue2); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 32px 6%;
+      border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .82rem;
+    }
+    footer span { color: var(--blue2); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-inner     { grid-template-columns: 1fr; }
+      .hero-photo-wrap { order: -1; }
+      .hero-photo     { width: 200px; height: 200px; }
+      .about-grid     { grid-template-columns: 1fr; }
+      .contact-grid   { grid-template-columns: 1fr; }
+      .nav-links      { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BLOBS -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Dev<span>.</span>Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#certificates">Sertifikat</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">Available for opportunities</div>
+      <h1 class="hero-name">
+        Halo, Saya<br>
+        <!-- ✏️ GANTI NAMA KAMU -->
+        <span>Muhammad Daffa Al-Fikri</span>
+      </h1>
+      <!-- ✏️ GANTI ROLE/JURUSAN -->
+      <div class="hero-role">D3 Teknologi Telekomunikasi · Content Creator · Network Engineer</div>
+      <!-- ✏️ GANTI DESKRIPSI SINGKAT -->
+      <p class="hero-desc">
+        Mahasiswa D3 Teknologi Telekomunikasi di Telkom University yang memiliki ketertarikan besar pada bidang Network Engineering, IoT Development, Web Development, Motion Graphic, dan Content Creator. Aktif dalam organisasi mahasiswa serta mengelola berbagai media sosial kreatif mahasiswa.
+      </p>
+      <div class="hero-buttons">
+        <a href="#projects" class="btn-primary">Lihat Projects</a>
+        <a href="#contact" class="btn-outline">Hubungi Saya</a>
+      </div>
+      <div class="hero-stats">
+        <!-- ✏️ GANTI ANGKA SESUAI KENYATAAN -->
+        <div class="stat">
+          <div class="stat-num">10<span>+</span></div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">15<span>+</span></div>
+          <div class="stat-label">Sertifikat</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2<span>+</span></div>
+          <div class="stat-label">Years Exp</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOTO -->
+    <div class="hero-photo-wrap">
+      <div class="hero-photo">
+        <!-- ✏️ GANTI src DENGAN FOTO KAMU, misal: src="foto.jpg" -->
+        <img src="foto1.jpeg" alt="Foto Profil"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Letakkan foto kamu<br>foto.jpg</span>
+        </div>
+        <!-- ✏️ GANTI NAMA SEKOLAH -->
+        <div class="hero-photo-badge">Telkom University</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title">Tentang Saya</h2>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+            Saya adalah mahasiswa D3 Teknologi Telekomunikasi di Telkom University yang memiliki ketertarikan besar di bidang networking, pengembangan website, IoT development, desain grafis, motion graphic, dan content creator.
+        </p>
+        <p>
+            Saya aktif dalam organisasi himpunan mahasiswa sebagai Staff KOMINFO dan Ketua Divisi Pubdok. Selain itu saya juga mengelola akun media sosial mahasiswa dan membuat berbagai konten kreatif yang relate dengan kehidupan mahasiswa Telkom University.
+        </p>
+        <p>
+            Saya senang belajar teknologi baru dan menerapkannya pada project nyata seperti REST API Python Flask, website organisasi, networking MikroTik, FPGA Verilog, hingga Internet Radio ESP32.
+        </p>
+        </div>
+        <!-- ✏️ GANTI SEMUA INFO PRIBADI -->
+        <div class="info-row">
+          <div class="info-icon">👤</div>
+          <div>
+            <div class="info-label">Full Name</div>
+            <div class="info-value">Muhammad Daffa Al-Fikri</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🎓</div>
+          <div>
+            <div class="info-label">Program Studi</div>
+            <div class="info-value">D3 Teknologi Telekomunikasi</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🏫</div>
+          <div>
+            <div class="info-label">Universitas</div>
+            <div class="info-value">Telkom University</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div>
+            <div class="info-label">Location</div>
+            <div class="info-value">Bandung, Jawa Barat</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📧</div>
+          <div>
+            <div class="info-label">Email</div>
+            <!-- ✏️ GANTI EMAIL -->
+            <div class="info-value">muhammaddaffaalfikri.2506@gmail.com</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🌐</div>
+          <div>
+            <div class="info-label">GitHub</div>
+            <!-- ✏️ GANTI USERNAME GITHUB -->
+            <div class="info-value">github.com/daffafikri</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════ SKILLS ══════════ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Skills</div>
+    <h2 class="section-title">Kemampuan Teknis</h2>
+    <div class="skills-grid">
+
+      <!-- NETWORKING -->
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">🌐</div>
+          <div>
+            <div class="skill-card-title">Networking</div>
+            <div class="skill-card-sub">Jaringan Komputer</div>
+          </div>
+        </div>
+        <!-- ✏️ SESUAIKAN PERSENTASE -->
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">MikroTik / RouterOS</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Cisco / CCNA</span><span class="skill-pct">75%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:75%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">TCP/IP & Subnetting</span><span class="skill-pct">85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Fiber Optic (FTTH)</span><span class="skill-pct">70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
+        </div>
+      </div>
+
+      <!-- PROGRAMMING -->
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">💻</div>
+          <div>
+            <div class="skill-card-title">Programming</div>
+            <div class="skill-card-sub">Bahasa Pemrograman</div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Python</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">HTML & CSS</span><span class="skill-pct">85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">JavaScript</span><span class="skill-pct">70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Flask / REST API</span><span class="skill-pct">75%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:75%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-top"><span class="skill-name">Laravel</span><span class="skill-pct">75%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:75%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-top"><span class="skill-name">IoT Development</span><span class="skill-pct">70%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
+        </div>
+      </div>
+
+      <!-- TOOLS -->
+      <div class="skill-card reveal">
+        <div class="skill-card-header">
+          <div class="skill-icon">🛠️</div>
+          <div>
+            <div class="skill-card-title">Tools & Platform</div>
+            <div class="skill-card-sub">Alat & Teknologi</div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Git & GitHub</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:80%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">VS Code</span><span class="skill-pct">83%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:83%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Wireshark</span><span class="skill-pct">70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Linux / Ubuntu</span><span class="skill-pct">73%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="--w:73%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-top"><span class="skill-name">FPGA / Verilog</span><span class="skill-pct">70%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:70%"></div></div>
+        </div>
+        <div class="skill-item">
+            <div class="skill-top"><span class="skill-name">ESP32 / Arduino</span><span class="skill-pct">75%</span></div>
+            <div class="skill-bar"><div class="skill-fill" style="--w:75%"></div></div>
+        </div>
+      </div>
+
+      <!-- CREATIVE -->
+<div class="skill-card reveal">
+  <div class="skill-card-header">
+    <div class="skill-icon">🎨</div>
+    <div>
+      <div class="skill-card-title">Creative</div>
+      <div class="skill-card-sub">Design & Media</div>
+    </div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-top"><span class="skill-name">Graphic Design</span><span class="skill-pct">85%</span></div>
+    <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-top"><span class="skill-name">Photography</span><span class="skill-pct">90%</span></div>
+    <div class="skill-bar"><div class="skill-fill" style="--w:90%"></div></div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-top"><span class="skill-name">Videography</span><span class="skill-pct">85%</span></div>
+    <div class="skill-bar"><div class="skill-fill" style="--w:85%"></div></div>
+  </div>
+
+  <div class="skill-item">
+    <div class="skill-top"><span class="skill-name">Content Creator</span><span class="skill-pct">90%</span></div>
+    <div class="skill-bar"><div class="skill-fill" style="--w:90%"></div></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════ EDUCATION ══════════ -->
+<section id="education">
+  <div class="container">
+    <div class="section-label">Education</div>
+    <h2 class="section-title">Riwayat Pendidikan</h2>
+    <div class="timeline reveal">
+
+      <!-- ✏️ GANTI RIWAYAT PENDIDIKAN KAMU -->
+      <div class="timeline-item">
+        <div class="tl-date">20244 — Sekarang</div>
+        <div class="tl-title">D3 Teknologi Telekomunikasi</div>
+        <div class="tl-place">Telkom University — Bandung</div>
+        <div class="tl-desc">
+          Mempelajari dasar-dasar jaringan telekomunikasi, sistem transmisi, jaringan komputer,
+          pemrograman, dan teknologi informasi.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date">2021 — 2024</div>
+        <div class="tl-title">SMK</div>
+        <!-- ✏️ GANTI NAMA SEKOLAH -->
+        <div class="tl-place">SMKN 9 Garut</div>
+        <div class="tl-desc">
+          Jurusan Teknik Komputer Jaringan. Lulus dengan nilai memuaskan.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════ PROJECTS ══════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">Proyek yang Pernah Dibuat</h2>
+    <div class="projects-grid">
+
+      <!-- PROJECT 1 — Film API -->
+      <div class="project-card reveal">
+        <div class="project-icon">🎬</div>
+        <div class="project-title">CineBase — Film Database API</div>
+        <div class="project-desc">
+          REST API database film menggunakan Python Flask dan SQLite. Dilengkapi tampilan website
+          Netflix-style dengan fitur pencarian, filter genre, dan integrasi poster dari TMDB API.
+        </div>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">SQLite</span>
+          <span class="tag">REST API</span>
+          <span class="tag">HTML/CSS/JS</span>
+        </div>
+        <!-- ✏️ GANTI LINK GITHUB KAMU -->
+        <a href="https://github.com/usernamekamu/cinebase" class="project-link" target="_blank">
+          View on GitHub →
+        </a>
+      </div>
+
+      <!-- ✏️ TAMBAH PROJECT LAIN -->
+      <div class="project-card reveal">
+        <div class="project-icon">🌐</div>
+        <div class="project-title">Konfigurasi Jaringan MikroTik</div>
+        <div class="project-desc">
+          Konfigurasi jaringan menggunakan MikroTik RouterOS meliputi DHCP Server, Firewall,
+          NAT, Bandwidth Management, dan Hotspot untuk lab praktikum.
+        </div>
+        <div class="project-tags">
+          <span class="tag">MikroTik</span>
+          <span class="tag">RouterOS</span>
+          <span class="tag">Networking</span>
+          <span class="tag">DHCP</span>
+        </div>
+        <a href="#" class="project-link">Lihat Detail →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-icon">📡</div>
+        <!-- ✏️ GANTI DENGAN PROJECT KAMU YANG LAIN -->
+        <div class="project-title">Website HMDT</div>
+        <div class="project-desc">
+          Membuat Website Himpunan D3 Teknologi Telekomunikasi,
+          dengan Github Pages sebagai hosting situs statis
+        </div>
+        <div class="project-tags">
+          <span class="tag">WebDesign</span>
+          <span class="tag">WebDevelopment</span>
+          <span class="tag">UI</span>
+        </div>
+        <a href="#" class="project-link">Lihat Detail →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════ CERTIFICATES ══════════ -->
+<section id="certificates">
+  <div class="container">
+    <div class="section-label">Achievements</div>
+    <h2 class="section-title">Sertifikat & Prestasi</h2>
+    <div class="cert-grid">
+
+      <!-- ✏️ GANTI SEMUA SERTIFIKAT DENGAN MILIK KAMU -->
+      <div class="cert-card reveal">
+        <div class="cert-icon">🏆</div>
+        <div>
+          <div class="cert-name">Senior Resident</div>
+          <div class="cert-issuer">Kemahasiswaan Telkom University</div>
+          <span class="cert-year">2025 - Sekarang</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">📜</div>
+        <div>
+          <div class="cert-name">Staff HIMA KOMINFO</div>
+          <div class="cert-issuer">Himpunan Mahasiswa D3 Teknologi Telekomunikasi</div>
+          <span class="cert-year">2024-2025</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">🥇</div>
+        <div>
+          <div class="cert-name">Ketua Divisi Pubdok</div>
+          <div class="cert-issuer">Formasi | Kemahasiswaan Telkom University</div>
+          <span class="cert-year">2026</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">🌟</div>
+        <div>
+          <div class="cert-name">PPKO (Ormawa)</div>
+          <div class="cert-issuer">Kemahasiswaan</div>
+          <span class="cert-year">2025</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">📋</div>
+        <div>
+          <div class="cert-name">Admin Media Sosial Dratel</div>
+          <div class="cert-issuer">DratelStory</div>
+          <span class="cert-year">2025 - Sekarang</span>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-icon">🎖️</div>
+        <div>
+          <div class="cert-name">Volunteer Panitia Logistik PPKMB Telkom University</div>
+          <div class="cert-issuer">Kemahasiswaan Telkom University</div>
+          <span class="cert-year">2024</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Hubungi Saya</h2>
+    <div class="contact-grid reveal">
+      <div>
+        <div class="contact-text">
+          <p>
+            Terbuka untuk peluang magang, kolaborasi proyek, atau sekadar berdiskusi tentang
+            teknologi. Jangan ragu untuk menghubungi saya!
+          </p>
+        </div>
+        <div class="contact-links">
+          <!-- ✏️ GANTI SEMUA KONTAK KAMU -->
+          <a href="mailto:email@kamu.com" class="contact-link">
+            <div class="contact-link-icon">📧</div>
+            <div>
+              <div class="contact-link-label">Email</div>
+              <div class="contact-link-val">muhammaddaffaalfikri.2506@gmail.com</div>
+            </div>
+          </a>
+          <a href="https://github.com/usernamekamu" class="contact-link" target="_blank">
+            <div class="contact-link-icon">🐙</div>
+            <div>
+              <div class="contact-link-label">GitHub</div>
+              <div class="contact-link-val">github.com/daffafikri</div>
+            </div>
+          </a>
+          <a href="https://instagram.com/dff_fkri" class="contact-link" target="_blank">
+
+<div class="contact-link-icon">📸</div>
+
+<div>
+<div class="contact-link-label">Instagram</div>
+
+<div class="contact-link-val">
+@dff_fkri
+</div>
+
+</div>
+</a>
+          <a href="https://linkedin.com/in/usernamekamu" class="contact-link" target="_blank">
+            <div class="contact-link-icon">💼</div>
+            <div>
+              <div class="contact-link-label">LinkedIn</div>
+              <div class="contact-link-val">linkedin.com/in/muhammad-daffa-al-fikri-b6314b369/</div>
+            </div>
+          </a>
+          <a href="https://wa.me/628xxxxxxxxxx" class="contact-link" target="_blank">
+            <div class="contact-link-icon">💬</div>
+            <div>
+              <div class="contact-link-label">WhatsApp</div>
+              <div class="contact-link-val">+62 895-4321-9111</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <div class="form-field">
+          <label>Nama</label>
+          <input type="text" placeholder="Nama lengkap kamu"/>
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="email@example.com"/>
+        </div>
+        <div class="form-field">
+          <label>Pesan</label>
+          <textarea rows="5" placeholder="Tulis pesanmu di sini..."></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%">Kirim Pesan ✉️</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <!-- ✏️ GANTI NAMA KAMU -->
+  Dibuat dengan ❤️ oleh <span>Muhammad Daffa Al-Fikri</span> · 2025 · D3 Teknik Telekomunikasi
+</footer>
+
+<script>
+  // ── SCROLL REVEAL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── SKILL BAR ANIMATION
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.classList.add('animated');
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skill-card').forEach(card => skillObserver.observe(card));
+
+  // ── SMOOTH NAV ACTIVE
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--blue2)' : '';
+    });
+  });
+</script>
+</body>
+</html>
